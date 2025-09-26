@@ -38,6 +38,8 @@ import SetupPage from "./pages/SetupPage"; // <-- Impor halaman setup
 import Sidebar from "./components/Sidebar";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import ExaminationPage from "./pages/exam/ExaminationPage";
+import ExamMonitor from "./pages/exam/ExamMonitor";
 
 function getCookie(name) {
   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
@@ -204,6 +206,9 @@ function AppLayout({ appMode }) {
             <Route path="/courses/:id/do" element={<PrivateRoute element={<DoExamPage />} />} />
             <Route path="/courses/:id/preview" element={<PrivateRoute element={<PreviewPage />} />} />
             <Route path="/courses/:courseId/log/:userId/:attemp" element={<StudentLogDetailPage />} />
+
+            <Route path="/exams/do" element={<PrivateRoute element={<ExaminationPage />} />} />
+            <Route path="/exams/monitor" element={<PrivateRoute element={<ExamMonitor />} />} />
 
             <Route
               path="/courses/:courseId/:userId/:attemp/hasil"

@@ -6,6 +6,7 @@ const path = require("path");
 const fs = require("fs");
 const { exec } = require("child_process");
 const dbPromise = require("./models/database"); // koneksi DB
+const morgan = require("morgan");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -53,6 +54,7 @@ async function setupCors() {
   app.use(express.urlencoded({ extended: true, limit: "50mb" }));
   app.use(cookieParser());
   app.use("/api/uploads", express.static(path.join(__dirname, "public", "uploads")));
+  app.use(morgan(":method :url :status :res[content-length] - :response-time ms"));
 
   // === ROUTES ===
   const authRoutes = require("./routes/authRoutes");
@@ -103,5 +105,8 @@ async function setupCors() {
   cleanUploads();
   setInterval(cleanUploads, 24 * 60 * 60 * 1000);
 
-  app.listen(PORT, () => console.log(`🚀 Server berjalan pada port ${PORT}`));
-})();
+  app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Server jalan di http://0.0.0.0:${PORT}`);
+});
+})
+();

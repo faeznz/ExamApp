@@ -24,35 +24,66 @@ const StatCard = ({ icon, title, value, color }) => {
   );
 };
 
-const ContentList = ({ title, items, type }) => {
-  const linkPath = type === 'assessment' ? (id) => `/courses/${id}/do` : (id) => `/lessons/${id}/view`;
-  const icon = type === 'assessment' ? <FiFileText className="text-indigo-500" /> : <FiPlayCircle className="text-green-500" />;
+const ContentList = ({ title, items, type, userId }) => {
+  const icon =
+    type === "assessment" ? (
+      <FiFileText className="text-indigo-500" />
+    ) : (
+      <FiPlayCircle className="text-green-500" />
+    );
 
   return (
     <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
       <h3 className="text-lg font-semibold text-gray-800 mb-4">{title}</h3>
       {items.length > 0 ? (
         <ul className="space-y-3">
-          {items.slice(0, 5).map(item => (
+          {items.slice(0, 5).map((item) => (
             <li key={item.id}>
-              <Link to={linkPath(item.id)} className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                <div className="flex items-center gap-4">
-                  {icon}
-                  <span className="font-medium text-gray-700">{item.nama}</span>
-                </div>
-                <FiArrowRight className="text-gray-400" />
-              </Link>
+              {type === "assessment" ? (
+                <Link
+                  to="/exams/do"
+                  state={{ courseId: item.id, userId }} // ✅ kirim lewat state
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    {icon}
+                    <span className="font-medium text-gray-700">
+                      {item.nama}
+                    </span>
+                  </div>
+                  <FiArrowRight className="text-gray-400" />
+                </Link>
+              ) : (
+                <Link
+                  to={`/lessons/${item.id}/view`}
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div className="flex items-center gap-4">
+                    {icon}
+                    <span className="font-medium text-gray-700">
+                      {item.nama}
+                    </span>
+                  </div>
+                  <FiArrowRight className="text-gray-400" />
+                </Link>
+              )}
             </li>
           ))}
         </ul>
       ) : (
         <div className="text-center py-10 bg-gray-50 rounded-lg">
           <FiActivity size={32} className="mx-auto text-gray-400" />
-          <p className="mt-2 text-gray-500">Belum ada {type === 'assessment' ? 'ujian' : 'materi'} yang tersedia.</p>
+          <p className="mt-2 text-gray-500">
+            Belum ada {type === "assessment" ? "ujian" : "materi"} yang
+            tersedia.
+          </p>
         </div>
       )}
       {items.length > 5 && (
-        <Link to={type === 'assessment' ? '/courses' : '/lessons'} className="block text-center mt-4 text-indigo-600 font-semibold hover:underline">
+        <Link
+          to={type === "assessment" ? "/courses" : "/lessons"}
+          className="block text-center mt-4 text-indigo-600 font-semibold hover:underline"
+        >
           Lihat Semua
         </Link>
       )}
@@ -159,7 +190,7 @@ function HomePage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-          <ContentList title="Ujian Terbaru" items={assessments} type="assessment" />
+          <ContentList title="Ujian Terbaru" items={assessments} type="assessment" userId={userId} />
           <ContentList title="Materi Terbaru" items={lessons} type="lesson" />
         </div>
       </div>

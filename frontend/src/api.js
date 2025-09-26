@@ -1,12 +1,14 @@
 import axios from "axios";
 
 // Dua pilihan baseURL
-const LOCAL_API = "http://localhost:5000/api";
-const PROXY_API = "/api";
+// const LOCAL_API = "http://192.168.0.12:5000/api";
+// const LOCAL_API = "https://dev2.faeznz.my.id/api";
+// const PROXY_API = "/api";
+const API_URL= process.env.REACT_APP_API_MAIN_BASE_URL || "http://localhost:5000/api";
 
 // Buat instance axios default dengan proxy sebagai fallback
 const api = axios.create({
-  baseURL: PROXY_API,
+  baseURL: API_URL,
   withCredentials: true,
 });
 
@@ -57,7 +59,7 @@ api.interceptors.response.use(
     ) {
       try {
         const fallback = axios.create({
-          baseURL: PROXY_API,
+          baseURL: API_URL,
           withCredentials: true,
           headers: error.config.headers,
         });
