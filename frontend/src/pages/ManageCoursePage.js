@@ -190,7 +190,7 @@ function ManageCoursePage() {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    if (file && file.name.endsWith(".zip")) {
+    if (file && file.name.endsWith(".docx")) {
       setSelectedFile(file);
     } else {
       toast.error("Hanya file .zip yang didukung!");
@@ -1055,7 +1055,7 @@ function ManageCoursePage() {
                 <input
                   id="upload-soal"
                   type="file"
-                  accept=".zip"
+                  accept=".docx"
                   onChange={handleFileChange}
                   className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 />
@@ -1074,28 +1074,30 @@ function ManageCoursePage() {
             <h3 className="text-lg font-semibold text-gray-800">
               📝 Daftar Soal ({soalList.length})
             </h3>
-            <button
-              onClick={() => {
-                setSoalList((prev) => [
-                  ...prev,
-                  {
-                    soal: "",
-                    opsi: ["", ""],
-                    jawaban: "",
-                    tipe_soal: "pilihan_ganda",
-                  },
-                ]);
-                setTimeout(() => {
-                  window.scrollTo({
-                    top: document.body.scrollHeight,
-                    behavior: "smooth",
-                  });
-                }, 100);
-              }}
-              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              ➕ Tambah Soal
-            </button>
+            {soalList.length < 1 && (
+              <button
+                onClick={() => {
+                  setSoalList((prev) => [
+                    ...prev,
+                    {
+                      soal: "",
+                      opsi: ["", ""],
+                      jawaban: "",
+                      tipe_soal: "pilihan_ganda",
+                    },
+                  ]);
+                  setTimeout(() => {
+                    window.scrollTo({
+                      top: document.body.scrollHeight,
+                      behavior: "smooth",
+                    });
+                  }, 100);
+                }}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              >
+                ➕ Tambah Soal
+              </button>
+            )}
           </div>
 
           {soalList.length > 0 && (
@@ -1444,6 +1446,31 @@ function ManageCoursePage() {
                   </div>
                 );
               })}
+
+              <div className="flex justify-end">
+                <button
+                  onClick={() => {
+                    setSoalList((prev) => [
+                      ...prev,
+                      {
+                        soal: "",
+                        opsi: ["", ""],
+                        jawaban: "",
+                        tipe_soal: "pilihan_ganda",
+                      },
+                    ]);
+                    setTimeout(() => {
+                      window.scrollTo({
+                        top: document.body.scrollHeight,
+                        behavior: "smooth",
+                      });
+                    }, 100);
+                  }}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                >
+                  ➕ Tambah Soal
+                </button>
+              </div>
 
               <div className="sticky bottom-0 z-10 bg-white/90 backdrop-blur-sm py-4 border-t -mx-8 -mb-8 mt-8">
                 <div className="max-w-7xl mx-auto px-8">

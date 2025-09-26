@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const router = express.Router();
-const { parseDocx, parseZip } = require('../controllers/uploadController');
+const { parseZip } = require('../controllers/uploadController');
 const protect = require('../middlewares/authMiddleware');
 
 // Konfigurasi multer untuk upload gambar ke disk
@@ -28,7 +28,7 @@ router.post('/upload-image', uploadDisk.single('image'), (req, res) => {
 });
 
 // Endpoint BARU untuk parsing .docx
-router.post('/upload/parse-docx', protect, uploadMemory.single('file'), parseDocx);
+// router.post('/upload/parse-docx', protect, uploadMemory.single('file'), parseDocx);
 
 // Endpoint BARU untuk parsing .zip dari MS Word HTML
 router.post('/upload/parse-zip', protect, uploadMemory.single('file'), parseZip);

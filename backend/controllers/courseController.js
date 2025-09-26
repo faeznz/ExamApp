@@ -546,20 +546,21 @@ if (!userId || isNaN(userId)) {
   }
   
   function replaceBase64Images(html) {
-    // Handle base64 images
-    let result = html.replace(/<img[^>]+src=["'](data:image\/[^"']+)["'][^>]*>/g, (match, base64) => {
-      const newSrc = saveBase64Image(base64);
-      if (newSrc) {
-        return match.replace(base64, newSrc);
-      }
+  return html.replace(/<img[^>]+src=["']([^"']+)["'][^>]*>/g, (match, src) => {
+    // Kalau sudah base64 → biarkan
+    if (src.startsWith("data:image/")) {
       return match;
-    });
-    
-    // Handle relative paths from ZIP (convert /uploads/images/ to /uploads/)
-    result = result.replace(/src="\/uploads\/images\//g, 'src="/uploads/');
-    
-    return result;
-  }
+    }
+
+    // Kalau masih relative path atau lokal → ubah sesuai kebutuhan
+    if (src.startsWith("/uploads/images/")) {
+      return match.replace('/uploads/images/', '/uploads/');
+    }
+
+    // Kalau format lain, bisa ditangani di sini
+    return match;
+  });
+}
   
   function cleanOptionsArray(rawOpsi) {
     let opsi = [];

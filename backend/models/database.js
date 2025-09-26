@@ -153,7 +153,7 @@ ${DB_NAME}
       CREATE TABLE IF NOT EXISTS questions (
         id INT AUTO_INCREMENT PRIMARY KEY,
         course_id INT NOT NULL,
-        soal TEXT NOT NULL,
+        soal VARCHAR(255) NOT NULL,
         opsi JSON NOT NULL,
         jawaban VARCHAR(255),
         tipe_soal VARCHAR(20) DEFAULT 'pilihan_ganda',
@@ -250,7 +250,9 @@ ${DB_NAME}
       CREATE TABLE IF NOT EXISTS status_ujian (
         user_id INT,
         course_id INT,
-        status VARCHAR(30) DEFAULT 'belum mengerjakan',
+        status VARCHAR(30) DEFAULT 'belum_mengerjakan',
+        start_time DATETIME DEFAULT NULL,
+        end_time DATETIME DEFAULT NULL,
         PRIMARY KEY (user_id, course_id)
       )
     `);

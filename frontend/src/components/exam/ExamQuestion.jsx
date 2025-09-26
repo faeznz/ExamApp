@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import useExamStore from "../../stores/useExamStore";
 import useSSEStore from "../../stores/useSSEStore";
 import useQueryParams from "../../hooks/useQueryParams";
-import useExamAccess from "../../hooks/useExamAccess"; 
+import useExamAccess from "../../hooks/useExamAccess";
 import JoditEditor from "jodit-react";
 import api from "../../api/axiosInstance";
 import ExamStartModal from "./ExamStartModal";
@@ -34,7 +34,7 @@ export default function ExamQuestion() {
     try {
       setLoadingStart(true);
       await api.post("/ujian/mulai", { courseId, userId });
-      await fetchSoal(courseId, userId);
+      // await fetchSoal(courseId, userId);
 
       localStorage.setItem(`ujian_started_${courseId}_${userId}`, "1");
       setShowStartPopup(false);
@@ -98,7 +98,9 @@ export default function ExamQuestion() {
         <div className="space-y-3">
           {opsiArray.map((opsi, idx) => {
             const huruf = String.fromCharCode(65 + idx);
-            const isSelected = jawabanSiswa[currentSoal.id] === idx;
+            const jawabanObj = jawabanSiswa[currentSoal.id] || {};
+            const isSelected = jawabanObj.jawaban === idx;
+
             return (
               <label
                 key={idx}
@@ -114,6 +116,7 @@ export default function ExamQuestion() {
                   value={idx}
                   checked={isSelected}
                   onChange={() => handleJawab(currentSoal.id, idx, userId)}
+                  className="sr-only"
                 />
                 <span
                   className={`flex items-center justify-center w-6 h-6 mr-4 border rounded-full text-sm font-bold ${

@@ -1,12 +1,19 @@
 const express = require("express");
 const router = express.Router();
 const courseController = require("../controllers/courseController");
+const uploadSoalController = require("../controllers/uploadSoalController");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+// const upload = multer({ dest: "uploads/" });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, "uploads/"),
+  filename: (req, file, cb) => cb(null, Date.now() + "-" + file.originalname),
+});
+
+const upload = multer({ storage });
 const authMiddleware = require("../middlewares/authMiddleware");
 const onlyRole = require("../middlewares/onlyRole");
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 
 // --- Course Umum
 router.post("/", onlyRole(["admin", "guru"]), courseController.createCourse);
@@ -23,6 +30,7 @@ router.post("/:id/questions/save", onlyRole(["admin", "guru"]), courseController
 router.delete("/:id/questions/:questionId", onlyRole(["admin", "guru"]), courseController.deleteQuestion);
 
 router.post("/:id/upload-soal", upload.single("file"), courseController.uploadSoal);
+router.post("/upload", upload.single("pdf"), uploadSoalController.parsePdfToDb);
 
 // --- Ujian & Token
 router.post("/:id/validate-token", courseController.validateCourseToken);

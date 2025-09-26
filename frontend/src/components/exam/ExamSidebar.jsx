@@ -15,14 +15,17 @@ export default function ExamSidebar() {
 
     try {
       await api.post("/ujian/selesai", { courseId, userId });
-      alert("Ujian selesai!");
       // reset localStorage supaya bisa mulai lagi
       localStorage.removeItem(`ujian_started_${courseId}_${userId}`);
       // navigasi ke home tanpa reload
       navigate("/home");
     } catch (err) {
       console.error("❌ Gagal akhiri ujian:", err);
-      alert("Gagal mengakhiri ujian, coba lagi.");
+
+      // baca pesan dari server kalau ada
+      const msg =
+        err.response?.data?.message || "Gagal mengakhiri ujian, coba lagi.";
+      alert(msg);
     }
   };
 
